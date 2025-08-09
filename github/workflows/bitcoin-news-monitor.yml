@@ -1,0 +1,47 @@
+name: Bitcoin News Monitor
+
+on:
+  schedule:
+    # 매 5분마다 실행 (GitHub Actions 최소 간격)
+    - cron: '*/5 * * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  monitor-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        pip install requests feedparser beautifulsoup4 schedule python-dateutil trafilatura
+    
+    - name: Download previous processed articles
+      uses: actions/download-artifact@v3
+      continue-on-error: true
+      with:
+        name: processed-articles
+        path: .
+
+    - name: Run Bitcoin News Monitor
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python github_monitor.py
+    
+    - name: Upload processed articles
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: processed-articles
+        path: processed_articles.json
+        retention-days: 30
