@@ -1,0 +1,38 @@
+{
+    "telegram": {
+        "bot_token": "",
+        "chat_id": ""
+    },
+    "monitoring": {
+        "interval_minutes": 1,
+        "max_articles_per_notification": 3
+    },
+    "news_sources": {
+        "rss_feeds": [
+        ],
+        "scraping_urls": [
+            "https://kr.investing.com/news/cryptocurrency-news",
+            "https://kr.tradingview.com/news/?category=crypto"
+        ]
+    },
+    "keywords": [
+        "bitcoin",
+        "btc",
+        "비트코인",
+        "암호화폐",
+        "코인",
+        "크립토",
+        "블록체인",
+        "cryptocurrency",
+        "crypto",
+        "blockchain"
+    ],
+    "storage": {
+        "processed_articles_file": "processed_articles.json",
+        "max_stored_articles": 1000
+    },
+    "logging": {
+        "level": "INFO",
+        "file": "bitcoin_news_monitor.log"
+    }
+}
